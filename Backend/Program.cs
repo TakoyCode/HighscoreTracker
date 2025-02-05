@@ -25,8 +25,6 @@ string connectionString = $@"Server={Environment.GetEnvironmentVariable("SERVER"
                             Password={Environment.GetEnvironmentVariable("PASSWORD")};
                             Encrypt=False;";
 
-Console.WriteLine(connectionString);
-
 var connection = new SqlConnection(connectionString);
 
 app.MapGet("/Highscores", async () => {
@@ -41,10 +39,20 @@ app.MapPost("/Highscores", async (NewHighscore highscore) => {
     return await CreateHighscore(highscore);
     });
 
+app.MapDelete("/Highscores", async (Highscore highscore) => {
+    return await DeleteHighscore(highscore);
+    });
+
 async Task<int> UpdateHighscore(Highscore highscore)
 {
     var sql = @"UPDATE Highscores
               SET CurrentStreak = @CurrentStreak, HighScore = @HighScore, TotalDays = @TotalDays WHERE ID = @ID";
+    return await connection.ExecuteAsync(sql, highscore);
+}
+
+async Task<int> DeleteHighscore(Highscore highscore)
+{
+    var sql = @"DELETE FROM Highscores WHERE ID = @ID";
     return await connection.ExecuteAsync(sql, highscore);
 }
 
