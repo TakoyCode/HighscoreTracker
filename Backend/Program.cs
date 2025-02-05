@@ -1,7 +1,7 @@
 using Microsoft.Data.SqlClient;
-using Dapper;
 using HighscoreTracker;
 using DotNetEnv;
+using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,49 +25,26 @@ string connectionString = $@"Server={Environment.GetEnvironmentVariable("SERVER"
                             Password={Environment.GetEnvironmentVariable("PASSWORD")};
                             Encrypt=False;";
 
+
 var connection = new SqlConnection(connectionString);
 
+DB db = new DB(connection);
+
 app.MapGet("/Highscores", async () => {
-    return await ReadHighscore();
+    return await db.ReadHighscore();
     });
 
-app.MapPut("/Highscores", async (Highscore highscore) => {
-    return await UpdateHighscore(highscore);
+app.MapPut("/Highscores", async ([FromBody]Highscore highscore) => {
+    return await db.UpdateHighscore(highscore);
     });
 
-app.MapPost("/Highscores", async (NewHighscore highscore) => {
-    return await CreateHighscore(highscore);
+app.MapPost("/Highscores", async ([FromBody]NewHighscore highscore) => {
+    return await db.CreateHighscore(highscore);
     });
 
-app.MapDelete("/Highscores", async (Highscore highscore) => {
-    return await DeleteHighscore(highscore);
+app.MapDelete("/Highscores", async ([FromBody]Highscore highscore) => {
+    return await db.DeleteHighscore(highscore);
     });
-
-async Task<int> UpdateHighscore(Highscore highscore)
-{
-    var sql = @"UPDATE Highscores
-              SET CurrentStreak = @CurrentStreak, HighScore = @HighScore, TotalDays = @TotalDays WHERE ID = @ID";
-    return await connection.ExecuteAsync(sql, highscore);
-}
-
-async Task<int> DeleteHighscore(Highscore highscore)
-{
-    var sql = @"DELETE FROM Highscores WHERE ID = @ID";
-    return await connection.ExecuteAsync(sql, highscore);
-}
-
-async Task<int> CreateHighscore(NewHighscore highscore)
-{
-    var sql = @"INSERT INTO Highscores (CurrentStreak, HighScore, TotalDays)
-               VALUES (@CurrentStreak, @HighScore, @TotalDays)";
-    return await connection.ExecuteAsync(sql, highscore);
-}
-
-async Task<IEnumerable<Highscore>> ReadHighscore()
-{
-    var sql = "SELECT * FROM Highscores";
-    return await connection.QueryAsync<Highscore>(sql);
-}
 
 app.UseHttpsRedirection();
 

@@ -1,6 +1,6 @@
 namespace HighscoreTracker;
 
-class NewHighscore
+public class NewHighscore
 {
     public int CurrentStreak { get; set; }
     public int HighScore { get; set; }
