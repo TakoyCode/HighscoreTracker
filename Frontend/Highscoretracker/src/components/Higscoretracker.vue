@@ -1,72 +1,67 @@
 <script>
 import { reactive } from 'vue';
 import axios from 'axios';
+import { onMounted } from 'vue';
 
 export default{
     data(){
     return {
-        highScoreTrackers:[{
-            CurrentStreak: 0,
-            HighScore: 0,
-            TotalDays: 0,
-        },
-        {
-            CurrentStreak: 0,
-            HighScore: 0,
-            TotalDays: 0,
-        }]
+        highScoreTrackers:[]
     }
     },
     methods: {
         async fetchCount(){
-            const response = await axios.get("https://localhost:7094/HighScores");
-            this.highScoreTrackers = response;
+            const response = await axios.get("http://localhost:5236/Highscores");
+            this.highScoreTrackers = response.data;
         },
         async increment(id, num) {
-            const highScoreTracker = highScoreTrackers.find(h => h.Id == id)
-            highScoreTracker.CurrentStreak = num;
-            const response = await axios.post("https://localhost:7094/HighScores", highScoreTracker)
+            const highScoreTracker = this.highScoreTrackers.find(h => h.id == id)
+            highScoreTracker.currentStreak = num;
+            const response = await axios.put("http://localhost:5236/Highscores", highScoreTracker)
             this.fetchCount()
         },
         async AddHighScoreTrackers(){
-            const highScoreTracker = new {
+            const highScoreTracker = {
                 CurrentStreak: 0,
                 HighScore: 0,
                 TotalDays: 0,
             }
-            const response = await axios.post("https://localhost:7094/HighScores", highScoreTracker)
+            const response = await axios.post("http://localhost:5236/Highscores", highScoreTracker)
             this.fetchCount()
         },
-
         async DeleteHighScoreTrackers(id){
             const highScoreTracker = highScoreTrackers.find(h => h.Id == id)
-            const response = await axios.delete("https://localhost:7094/HighScores", highScoreTracker)
+            const response = await axios.delete("http://localhost:5236/Highscores", highScoreTracker)
             this.fetchCount()
         }
     
+    },
+    mounted() {
+        this.fetchCount()
     }
 }
 </script>
 
 <template>
+    <button @click="AddHighScoreTrackers()">jdsnfdgdfgdfgfdgvon</button><br/>
     <div class="mainmain">
-        <div class="main" v-for="highScoreTracker in highScoreTrackers" :key="highScoreTracker.ID">
+        <div class="main" v-for="highScoreTracker in highScoreTrackers" :key="highScoreTracker.id">
                 <div style="display: flex;">
                     <div class="content">
                     <div class="para">
-                         <p>Streak: {{highScoreTracker.CurrentStreak}} </p>
-                         <p>HighScore: {{highScoreTracker.HighScore}} </p>
-                         <p>Total days: {{highScoreTracker.TotalDays}} </p>
+                         <p>Streak: {{highScoreTracker.currentStreak}} </p>
+                         <p>HighScore: {{highScoreTracker.highScore}} </p>
+                         <p>Total days: {{highScoreTracker.totalDays}} </p>
                     </div>
                     <br />
                     </div>
                     <div class="content">    
-                        <img :src="highScoreTracker.CurrentStreak > 0 ? '/img/happy.jpg' : '/img/sad.jpg'" alt="streak status">
+                        <img :src="highScoreTracker.currentStreak > 0 ? '/img/happy.jpg' : '/img/sad.jpg'" alt="streak status">
                     </div>
                     <div class="content-button"> 
-                    <button @click="increment(highScoreTracker.ID, highScoreTracker.CurrentStreak + 1)">Done</button>
+                    <button @click="increment(highScoreTracker.id, highScoreTracker.currentStreak + 1)">Done</button>
                     <br />
-                    <button @click="increment(highScoreTracker.ID, 0)">Not done</button>
+                    <button @click="increment(highScoreTracker.id, 0)">Not done</button>
                     </div>
                 </div>
                 <br/>
