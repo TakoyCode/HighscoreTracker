@@ -2,12 +2,14 @@ using Microsoft.Data.SqlClient;
 using HighscoreTracker;
 using DotNetEnv;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+builder.Services.AddCors();
 
 var app = builder.Build();
 
@@ -18,7 +20,6 @@ if (app.Environment.IsDevelopment())
 }
 
 Env.Load();
-
 string connectionString = $@"Server={Environment.GetEnvironmentVariable("SERVER")};
                             Database={Environment.GetEnvironmentVariable("DATABASE")};
                             User Id={Environment.GetEnvironmentVariable("USERID")};
@@ -46,6 +47,12 @@ app.MapDelete("/Highscores", async ([FromBody]Highscore highscore) => {
     return await db.DeleteHighscore(highscore);
     });
 
+app.UseCors(builder =>
+{
+    builder.AllowAnyOrigin()
+           .AllowAnyMethod()
+           .AllowAnyHeader();
+});
 app.UseHttpsRedirection();
 
 app.Run();

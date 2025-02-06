@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "/home/th/github/HighscoreTracker/Backend/Backend.csproj": {}
+    "C:\\Users\\tommy\\RiderProjects\\HighscoreTracker\\Backend\\Backend.csproj": {}
   },
   "projects": {
-    "/home/th/github/HighscoreTracker/Backend/Backend.csproj": {
+    "C:\\Users\\tommy\\RiderProjects\\HighscoreTracker\\Backend\\Backend.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/th/github/HighscoreTracker/Backend/Backend.csproj",
+        "projectUniqueName": "C:\\Users\\tommy\\RiderProjects\\HighscoreTracker\\Backend\\Backend.csproj",
         "projectName": "Backend",
-        "projectPath": "/home/th/github/HighscoreTracker/Backend/Backend.csproj",
-        "packagesPath": "/home/th/.nuget/packages/",
-        "outputPath": "/home/th/github/HighscoreTracker/Backend/obj/",
+        "projectPath": "C:\\Users\\tommy\\RiderProjects\\HighscoreTracker\\Backend\\Backend.csproj",
+        "packagesPath": "C:\\Users\\tommy\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\tommy\\RiderProjects\\HighscoreTracker\\Backend\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/home/th/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\tommy\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net9.0"
@@ -80,7 +80,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/9.0.102/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.101/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
