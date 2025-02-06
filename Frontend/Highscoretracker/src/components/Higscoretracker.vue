@@ -5,9 +5,9 @@ import { onMounted } from 'vue';
 
 export default{
     data(){
-    return {
-        highScoreTrackers:[]
-    }
+        return {
+            highScoreTrackers:[]
+        }
     },
     methods: {
         async fetchCount(){
@@ -17,6 +17,9 @@ export default{
         async increment(id, num) {
             const highScoreTracker = this.highScoreTrackers.find(h => h.id == id)
             highScoreTracker.currentStreak = num;
+            if(highScoreTracker.highScore < highScoreTracker.currentStreak){
+                highScoreTracker.highScore = highScoreTracker.currentStreak;    
+            }
             const response = await axios.put("http://localhost:5236/Highscores", highScoreTracker)
             this.fetchCount()
         },
